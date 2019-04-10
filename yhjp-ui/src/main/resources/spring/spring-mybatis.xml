@@ -11,7 +11,7 @@
 
 
 	<!--引入配置文件-->
-	<context:property-placeholder location="classpath:/WEB-INF/spring/jdbc.properties"/>
+	<context:property-placeholder location="classpath:/spring/jdbc.properties" ignore-unresolvable="true" />
 
 	<!--spring mybatis整合-->
 
@@ -76,7 +76,7 @@
 
 	<!--配置事务切面-->
 	<aop:config>
-		<aop:pointcut expression="execution(* com.cht.integration.service.impl.*.*(..))"
+		<aop:pointcut expression="execution(* com.yhjp.service.impl.*.*(..))"
 					  id="interceptorpointcut" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="interceptorpointcut" />
 		<!--<aop:aspect ref="DataSourceAspect" >-->
@@ -94,14 +94,14 @@
 				<value>classpath:/mapper/*.xml</value>
 			</array>
 		</property>
-		<property name="configLocation" value="classpath:/WEB-INF/spring/mybatis-config.xml"/>
+		<property name="configLocation" value="classpath:/spring/mybatis-config.xml"/>
 		<!--<property name="typeAliasesPackage" value="com.qmyiz.*" />-->
-		<property name="typeAliasesPackage" value="com.cht.integration.vo" />
+		<property name="typeAliasesPackage" value="com.yhjp.bean" />
 	</bean>
 
 	<!-- DAO接口所在包名，Spring会自动查找其下的类  -->
 	<bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.cht.integration.dao" />
+		<property name="basePackage" value="com.yhjp.dao" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
 	</bean>
 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:cache="http://www.springframework.org/schema/cache"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/cache
+		http://www.springframework.org/schema/cache/spring-cache.xsd
+		http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util-4.3.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	<context:property-placeholder location="classpath:/spring/redis.properties" ignore-unresolvable="true" />
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxIdle" value="${redis.maxIdel}"/>
+		<property name="minEvictableIdleTimeMillis" value="${redis.minEvictableIdleTimeMillis}"/>
+		<property name="numTestsPerEvictionRun" value="${redis.numTestsPerEvictionRun}"/>
+		<property name="timeBetweenEvictionRunsMillis" value="${redis.timeBetweenEvictionRunsMillis}"/>
+	</bean>
+	
+	<bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="poolConfig" ref="jedisPoolConfig"/>
+		<property name="hostName" value="${redis.host}"/>
+		<property name="port" value="${redis.port}"/>
+		<property name="timeout" value="${redis.timeout}"/>
+		<property name="usePool" value="${redis.use.pool}"/>
+		<property name="password" value="${redis.password}"/>
+	</bean>
+	
+	<bean id="jedisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory" ref="jedisConnectionFactory"/>
+        <property name="keySerializer">  
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>  
+        </property>  
+        <property name="valueSerializer">  
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"/>  
+        </property> 
+	</bean>
+	
+	<!-- 缓存设置 -->
+	<cache:annotation-driven/>
+	<!-- 缓存名称 -->
+	<util:set id="configuredCacheNames">
+		<value>MobileAccountErrorNew</value>
+	</util:set>
+	<!-- 缓存失效时间（seconds）0: 永不失效 -->
+	<util:map id="expires">
+		<entry key="MobileAccountErrorNew" value="0"/>
+	</util:map>
+	<!-- 缓存管理 -->
+	<bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+		<constructor-arg ref="jedisTemplate" />
+	</bean>
+	
+</beans>

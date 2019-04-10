@@ -7,27 +7,13 @@
 	http://www.springframework.org/schema/context 
 	http://www.springframework.org/schema/context/spring-context.xsd">
 	
-	<context:component-scan base-package="cn.gyyx.mobile.account">
+	<context:component-scan base-package="com.yhjp.ui">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
-    <context:component-scan base-package="cn.gyyx.mobile.pay">
-       <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/> 
-    </context:component-scan>
-    <!-- 生成图片验证码 -->
- <!--    <bean id="capachaGenerator"
-		class="cn.gyyx.core.captcha.CaptchaCreator">
-		<constructor-arg value="redis://${account.redis.hostName}:${account.redis.port}"/>
-		<constructor-arg value="GYYX_CHECKCODE_VJ"/>
-		<constructor-arg value="account.mobile.gyyx.cn"/>
-	</bean> -->
-	
+
 	<!-- rest客户端调用 -->
 	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
 	</bean>
-	
- 	<bean id="applicationContext" class="cn.gyyx.mobile.account.bll.impl.ThirdLoginFactoryImpl">
-	</bean>
-	
 	<!-- spring validation配置 -->
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
 		<property name="providerClass" value="org.hibernate.validator.HibernateValidator"></property>
@@ -39,16 +25,5 @@
  	<!-- 引入其他配置 -->
 	<import resource="spring-mybatis.xml"/>
 	<import resource="spring-redis.xml"/>
-	
-	<bean class="cn.gyyx.lib.config.GyyxConfigPlaceholder">
-       <property name="provider" value="/data/conf/feizhu-h5.gyyx.cn"/>
-       <property name="locations">
-           <list>
-               	<value>mysql.properties</value>   
-	            <value>redis.properties</value> 
-	            <value>controller.properties</value>
-	            <value>captcha.properties</value>
-           </list>
-       </property>
-    </bean>	  
+
 	</beans>
