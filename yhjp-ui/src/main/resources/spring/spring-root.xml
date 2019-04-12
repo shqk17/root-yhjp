@@ -26,4 +26,32 @@
 	<import resource="spring-mybatis.xml"/>
 	<import resource="spring-redis.xml"/>
 
+	<beans profile="development">
+		<bean id="propertyConfig"
+			  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+			<property name="locations">
+				<list>
+					<value>classpath:/config/jdbc.properties</value>
+					<value>classpath:/config/redis.properties</value>
+<!--					<value>classpath:/config/controller.properties</value>-->
+<!--					<value>classpath:/config/captcha.properties</value>-->
+<!--					<value>classpath:/config/sms.properties</value>-->
+				</list>
+			</property>
+		</bean>
+	</beans>
+
+	<beans profile="production">
+		<bean id="propertyConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+			<property name="locations">
+				<list>
+					<value>file:/data/conf/power.i7danche.cn/mysql.properties</value>
+					<value>file:/data/conf/power.i7danche.cn/redis.properties</value>
+					<value>file:/data/conf/power.i7danche.cn/controller.properties</value>
+					<value>file:/data/conf/power.i7danche.cn/captcha.properties</value>
+					<value>file:/data/conf/power.i7danche.cn/sms.properties</value>
+				</list>
+			</property>
+		</bean>
+	</beans>
 	</beans>

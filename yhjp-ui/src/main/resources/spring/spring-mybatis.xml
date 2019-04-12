@@ -11,7 +11,7 @@
 
 
 	<!--引入配置文件-->
-	<context:property-placeholder location="classpath:/spring/jdbc.properties" ignore-unresolvable="true" />
+	<context:property-placeholder location="classpath:/config/jdbc.properties" ignore-unresolvable="true" />
 
 	<!--spring mybatis整合-->
 
@@ -94,7 +94,7 @@
 				<value>classpath:/mapper/*.xml</value>
 			</array>
 		</property>
-		<property name="configLocation" value="classpath:/spring/mybatis-config.xml"/>
+		<property name="configLocation" value="classpath:/config/mybatis-config.xml"/>
 		<!--<property name="typeAliasesPackage" value="com.qmyiz.*" />-->
 		<property name="typeAliasesPackage" value="com.yhjp.bean" />
 	</bean>
