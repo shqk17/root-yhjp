@@ -378,7 +378,7 @@ table.properties td {
 
   <h2 class="fs_heading">Special thanks to</h2>
 
-  <p><img src="./images/xiLogo64.png" style="float: left; margin-right: 10px;" /></p>
+  <p><img src="/static/images/2ces.jpg" style="float: left; margin-right: 10px;" /></p>
 
   <p>This project website and our User's Guide are produced using the <a href="http://xilize.sourceforge.net/">Xilize</a> (http://xilize.sourceforge.net/) syntax and rendering engine. The content is written in Xilize text markup, then converted to <span class="caps">XHTML</span> using the Xilize converter. We'd like to thank the Xilize team at CenteredWork for sharing this library. Try it out! It's a great way to write websites quickly, without losing control over formatting. Check it out!</p>
 
