@@ -39,9 +39,10 @@ public class TestController {
     }
 
     @RequestMapping("/getData")
-    public ReasultBean getData(Model model) {
+    @ResponseBody
+    public ReasultBean<String> getData(Model model) {
         String result = testService.getTestData();
-        return new ReasultBean(true, "查询成功", result);
+        return new ReasultBean<String>(true, "查询成功", result);
     }
 
     @RequestMapping("/bb")

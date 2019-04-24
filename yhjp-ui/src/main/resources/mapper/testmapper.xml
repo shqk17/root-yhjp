@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhjp.dao.TestDao">
+
+
+    <!-- 添加离职信息 发起离职申请时用 -->
+    <select id="getTestInfo"
+            parameterType="java.lang.Integer" resultType="java.lang.String">
+    select account from account_bind_log where user_id = '1233244'
+    </select>
+
+
+
+</mapper>
