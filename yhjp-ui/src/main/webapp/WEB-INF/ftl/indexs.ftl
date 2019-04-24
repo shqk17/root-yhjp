@@ -244,7 +244,7 @@ table.properties td {
 
   </div>
 
-  <h1>The Flying Saucer Project</h1>
+  <h1>The Flying Saucer Project   ${name} </h1>
 
   <p><a id="fs_logo" href="faq.html#acid2">&nbsp;</a></p>
 

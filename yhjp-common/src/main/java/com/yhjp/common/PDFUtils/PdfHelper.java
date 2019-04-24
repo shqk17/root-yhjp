@@ -1,35 +1,53 @@
 package com.yhjp.common.PDFUtils;
 
-import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
-import freemarker.template.*;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import java.awt.*;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.text.ParseException;
+import java.net.URL;
 import java.util.Locale;
 
 public class PdfHelper {
 
-    public static ITextRenderer getRender() throws DocumentException, IOException {
+    public static ITextRenderer getRender() throws  Exception {
         ITextRenderer render = new ITextRenderer();
+        Rectangle rectangle = new Rectangle();
+        rectangle.add(420, 297);
+        ITextFontResolver fontResolver = (ITextFontResolver) render
+                .getSharedContext().getFontResolver();
         String path = getPath();
-//添加字体，以支持中文
-        render.getFontResolver().addFont(path + "static/font/song.TTF", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-        render.getFontResolver().addFont(path + "static/font/simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+
+        URL ur = PdfHelper.class.getClassLoader().getResource("../../WEB-INF/static/font");
+        File f = new File(ur.toURI());
+        if (f.isDirectory()) {
+            File[] files = f.listFiles(new FilenameFilter() {
+                public boolean accept(File dir, String name) {
+                    String lower = name.toLowerCase();
+                    return lower.endsWith(".otf") || lower.endsWith(".ttf") || lower.endsWith(".ttc");
+                }
+            });
+            for (int i = 0; i < files.length; i++) {
+                fontResolver.addFont(files[i].getAbsolutePath(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            }
+        }
         return render;
     }
     //获取要写入PDF的内容
-    public static String getPdfContent(String ftlPath, String ftlName, Object o) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
+    public static String getPdfContent(String ftlPath, String ftlName, Object o) throws  IOException, TemplateException {
         return useTemplate(ftlPath, ftlName, o);
     }
     //使用freemarker得到html内容
-    public static String useTemplate(String ftlPath, String ftlName, Object o) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
+    public static String useTemplate(String ftlPath, String ftlName, Object o) throws  IOException, TemplateException {
         String html = null;
-        Template tpl = getFreemarkerConfig(ftlPath).getTemplate(ftlName);
-        tpl.setEncoding("UTF-8");
+        Template tpl = getFreemarkerConfig(ftlPath).getTemplate(ftlName,"UTF-8");
         StringWriter writer = new StringWriter();
         tpl.process(o, writer);
         writer.flush();
@@ -43,9 +61,11 @@ public class PdfHelper {
      * @throws IOException
      */
     private static Configuration getFreemarkerConfig(String templatePath) throws IOException {
-        Configuration config = new Configuration();
+        Configuration config = new Configuration(Configuration.VERSION_2_3_27);
         config.setDirectoryForTemplateLoading(new File(templatePath));
-        config.setEncoding(Locale.CHINA, "utf-8");
+        config.setDefaultEncoding("UTF-8");
+        config.setLogTemplateExceptions(false);
+        config.setWrapUncheckedExceptions(true);
         return config;
     }
     /**
@@ -53,6 +73,6 @@ public class PdfHelper {
      * @return
      */
     public static String getPath(){
-        return PdfHelper.class.getResource("").getPath().substring(1);
+        return PdfHelper.class.getResource("/../").getPath();
     }
 }
